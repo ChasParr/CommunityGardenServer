@@ -1,3 +1,6 @@
+const socketio = require('socket.io');
+const sockets = require('./sockets.js');
+const http = require('http');
 const path = require('path');
 const express = require('express');
 const compression = require('compression');
@@ -10,10 +13,12 @@ const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const url = require('url');
 const csrf = require('csurf');
+//
+//
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
-const dbURL = process.env.MONGODB_URI || 'mongodb://localhost/DomoMaker';
+const dbURL = process.env.MONGODB_URI || 'mongodb://localhost/CommunityGarden';
 
 mongoose.connect(dbURL, (err) => {
   if (err) {
@@ -51,7 +56,7 @@ app.use(session({
     port: redisURL.port,
     pass: redisPASS,
   }),
-  secret: 'Domo Arigato',
+  secret: 'Daisies',
   resave: true,
   saveUninitialized: true,
   cookie: {
@@ -70,6 +75,16 @@ app.use((err, req, res, next) => {
     console.log('MissingCSRF token');
     return false;
 });
+
+const sharedsession = require("express-socket.io-session");
+//
+const server = http.createServer(app);
+const io = socketio(server);
+io.use(sharedsession(session, {
+    autoSave: true
+}));
+sockets.setupSockets(io);
+//
 
 router(app);
 

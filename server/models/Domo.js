@@ -5,16 +5,23 @@ const _ = require('underscore');
 let DomoModel = {};
 
 const convertId = mongoose.Types.ObjectId;
-const setName = (name) => _.escape(name).trim();
 
 const DomoSchema = new mongoose.Schema({
-  name: {
+    
+  type: {
     type: String,
     required: true,
     trim: true,
-    set: setName,
   },
 
+  water: {
+    type: Number,
+    min: 0,
+    max: 100,
+    default: 0,
+    required: true,
+  },
+    
   age: {
     type: Number,
     min: 0,
@@ -27,6 +34,12 @@ const DomoSchema = new mongoose.Schema({
     ref: 'Account',
   },
 
+  room: {
+    type: mongoose.Schema.ObjectId,
+    required: true,
+    ref: 'Room',
+  },
+    
   createdData: {
     type: Date,
     default: Date.now,
@@ -34,15 +47,17 @@ const DomoSchema = new mongoose.Schema({
 });
 
 DomoSchema.statics.toAPI = (doc) => ({
-  name: doc.name,
+  type: doc.type,
+  water: doc.water,
   age: doc.age,
+  owner: doc.owner
 });
 
-DomoSchema.statics.findByOwner = (ownerId, callback) => {
+DomoSchema.statics.findByRoom = (roomName, callback) => {
   const search = {
-    owner: convertId(ownerId),
+    room: roomName,
   };
-  return DomoModel.find(search).select('name age').exec(callback);
+  return DomoModel.find(search).select('type water age owner').exec(callback);
 };
 
 DomoModel = mongoose.model('Domo', DomoSchema);

@@ -17,6 +17,25 @@ const AccountSchema = new mongoose.Schema({
     unique: true,
     match: /^[A-Za-z0-9_\-.]{1,16}$/,
   },
+  water: {
+    type: Number,
+    min: 0,
+    max: 100,
+    default: 100,
+    required: true,
+  },
+  points: {
+    type: Number,
+    min: 0,
+    default: 0,
+    required: true,
+  },
+  seeds: {
+    type: Number,
+    min: 0,
+    default: 5,
+    required: true,
+  },
   salt: {
     type: Buffer,
     required: true,
@@ -29,12 +48,20 @@ const AccountSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  lastStored: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-AccountSchema.statics.toAPI = doc => ({
+AccountSchema.statics.toAPI = (doc) => ({
   // _id is built into your mongo document and is guaranteed to be unique
   username: doc.username,
   _id: doc._id,
+  water: doc.water,
+  points: doc.points,
+  seeds: doc.seeds,
+  lastStored: doc.lastStored,
 });
 
 const validatePassword = (doc, password, callback) => {
