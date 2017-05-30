@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-const _ = require('underscore');
+// const _ = require('underscore');
 
 let RoomModel = {};
 
 const convertId = mongoose.Types.ObjectId;
-const setName = (name) => _.escape(name).trim();
+// const setName = (name) => _.escape(name).trim();
 
 const RoomSchema = new mongoose.Schema({
   roomName: {
@@ -21,23 +21,23 @@ const RoomSchema = new mongoose.Schema({
     required: true,
     ref: 'Account',
   },
-    
+
   ownerName: {
     type: String,
     required: true,
     trim: true,
     match: /^[A-Za-z0-9_\-.]{1,16}$/,
   },
-    
+
   plants: {
-      type: [],
+    type: [],
   },
-    
+
   users: {
     type: [mongoose.Schema.ObjectId],
-    ref: 'Account'
+    ref: 'Account',
   },
-    
+
   public: {
     type: Boolean,
     default: true,
@@ -47,7 +47,7 @@ const RoomSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-    
+
   lastStored: {
     type: Date,
     default: Date.now,
@@ -60,7 +60,7 @@ RoomSchema.statics.toAPI = (doc) => ({
   owner: doc.owner,
   ownerName: doc.ownerName,
   plants: doc.plants,
-  lastStored: doc.lastStored
+  lastStored: doc.lastStored,
 });
 
 RoomSchema.statics.findByName = (name, callback) => {

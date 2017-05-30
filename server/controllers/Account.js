@@ -47,7 +47,7 @@ const changePass = (request, response) => {
   req.body.oldPass = `${req.body.oldPass}`;
   req.body.pass = `${req.body.pass}`;
   req.body.pass2 = `${req.body.pass2}`;
-    
+
   if (!req.body.oldPass || !req.body.pass || !req.body.pass2) {
     return res.status(400).json({ error: 'All fields are required' });
   }
@@ -55,37 +55,36 @@ const changePass = (request, response) => {
   if (req.body.pass !== req.body.pass2) {
     return res.status(400).json({ error: 'Passwords do not match' });
   }
-    
-    console.log(req.session.account.username);
-    console.dir(req.body.oldPass);
-    console.dir(req.body.pass);
-    console.dir(req.body.pass2);
-    
-  return Account.AccountModel.authenticate(req.session.account.username, req.body.oldPass, (err, account) => {
-    if (err || !account) {
-      return res.status(400).json({ error: 'Wrong password' });
-    }
-    
-    return Account.AccountModel.generateHash(req.body.pass, (salt, hash) => {
-      account.password = hash;    
-      account.salt = salt;
-        
-      const savePromise = account.save();
-      
-      savePromise.then(() => {
-        return res.json({ redirect: '/changePass' });
-      });
-      
-      savePromise.catch((err) => {
-        console.log(err);
 
-        return res.status(400).json({ error: 'An error occurred.' });
+  console.log(req.session.account.username);
+  console.dir(req.body.oldPass);
+  console.dir(req.body.pass);
+  console.dir(req.body.pass2);
+
+  return Account.AccountModel.authenticate(
+      req.session.account.username, req.body.oldPass, (err, account) => {
+        if (err || !account) {
+          return res.status(400).json({ error: 'Wrong password' });
+        }
+
+        const newAccount = account;
+
+        return Account.AccountModel.generateHash(req.body.pass, (salt, hash) => {
+          newAccount.password = hash;
+          newAccount.salt = salt;
+
+          const savePromise = newAccount.save();
+
+          savePromise.then(() => res.json({ redirect: '/changePass' }));
+
+          savePromise.catch((error) => {
+            console.log(error);
+
+            return res.status(400).json({ error: 'An error occurred.' });
+          });
+        });
       });
-    });
-              
-  });
-    
-}
+};
 
 const signup = (request, response) => {
   const req = request;
@@ -132,14 +131,14 @@ const signup = (request, response) => {
 };
 
 const getToken = (request, response) => {
-    const req = request;
-    const res = response;
-    
-    const csrfJSON = {
-        csrfToken: req.csrfToken()
-    };
-    
-    res.json(csrfJSON);
+  const req = request;
+  const res = response;
+
+  const csrfJSON = {
+    csrfToken: req.csrfToken(),
+  };
+
+  res.json(csrfJSON);
 };
 
 module.exports.loginPage = loginPage;

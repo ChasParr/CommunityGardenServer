@@ -1,5 +1,4 @@
-const socketio = require('socket.io');
-const sockets = require('./sockets.js');
+
 const http = require('http');
 const path = require('path');
 const express = require('express');
@@ -13,6 +12,8 @@ const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const url = require('url');
 const csrf = require('csurf');
+const socketio = require('socket.io');
+const sockets = require('./sockets.js');
 //
 //
 
@@ -60,8 +61,8 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   cookie: {
-      httpOnly: true
-  }
+    httpOnly: true,
+  },
 }));
 app.engine('handlebars', expressHandlebars({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
@@ -70,18 +71,18 @@ app.use(cookieParser());
 
 app.use(csrf());
 app.use((err, req, res, next) => {
-    if (err.code !== 'EBADCSRFTOKEN') return next(err);
-    
-    console.log('MissingCSRF token');
-    return false;
+  if (err.code !== 'EBADCSRFTOKEN') return next(err);
+
+  console.log('MissingCSRF token');
+  return false;
 });
 
-const sharedsession = require("express-socket.io-session");
+const sharedsession = require('express-socket.io-session');
 //
 const server = http.createServer(app);
 const io = socketio(server);
 io.use(sharedsession(session, {
-    autoSave: true
+  autoSave: true,
 }));
 sockets.setupSockets(io);
 //

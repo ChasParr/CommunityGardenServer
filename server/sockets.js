@@ -49,7 +49,7 @@ const loadRoom = (roomData) => {
     // calculate time difference
     const timeDiff = new Date().getTime() - roomData.lastStored;
     for (let i = 0; i < newRoom.Plants; i++){
-        
+
         if (newRoom.Plants[i].water > 0)
     }
     */
@@ -117,11 +117,9 @@ const onJoin = (sock) => {
   socket.on('join', () => {
     socket.uid = socket.handshake.session.account._id;
     socket.roomName = socket.handshake.session.roomData.roomName;
-    socket.rNum = Rooms.findIndex(function (room) {
-       room.roomName === socket.roomName; 
-    });
+    socket.rNum = Rooms.findIndex((room) => room.roomName === socket.roomName);
     if (socket.rNum === -1) {
-      socket.rNum = createNewRoom(socket.handshake.session.roomData);
+      socket.rNum = loadRoom(socket.handshake.session.roomData);
     }
     Rooms[socket.rNum].UserIds.push(socket.uid);
     if (Rooms[socket.rNum].UserIds.length === 1) {
@@ -300,7 +298,7 @@ const onJoin = (sock) => {
         break;
     }
   });
-    
+
   socket.on('buyKarma', (data) => {
     Users[socket.uid].points += data;
   });

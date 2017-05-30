@@ -22,7 +22,7 @@ const makeDomo = (req, res) => {
     water: 0,
     age: 0,
     owner: req.session.account._id,
-    room: req.body.room
+    room: req.body.room,
   };
 
   const newDomo = new Domo.DomoModel(domoData);
@@ -44,17 +44,17 @@ const makeDomo = (req, res) => {
 };
 
 const getDomos = (request, response) => {
-    const req = request;
-    const res = response;
-    
-    return Domo.DomoModel.findByRoom(req.session.account._id, (err, docs) => {
-        if (err) {
-            console.log(err);
-            return res.status(400).json({ error: 'An error occurred' });
-        }
-        
-        return res.json({ domos: docs });
-    });
+  const req = request;
+  const res = response;
+
+  return Domo.DomoModel.findByRoom(req.session.account._id, (err, docs) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).json({ error: 'An error occurred' });
+    }
+
+    return res.json({ domos: docs });
+  });
 };
 
 module.exports.makerPage = makerPage;
