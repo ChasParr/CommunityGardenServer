@@ -249,7 +249,8 @@ var handleRoom = function handleRoom(e) {
 var joinRoom = function joinRoom(e) {
     e.preventDefault();
     //let roomName = e.target.value;
-    var body = e.target.value;
+    console.log(e.currentTarget);
+    var body = e.currentTarget.value;
     console.log(body);
     sendAjax('POST', '/joinRoom', body, redirect);
     return false;
@@ -273,7 +274,7 @@ var renderRoomList = function renderRoomList() {
         var body = "room=" + encodeURIComponent(room.roomName) + csrfStr;
         return React.createElement(
             "button",
-            { key: room._id, className: "room", onClick: joinRoom, value: body },
+            { key: room._id, type: "submit", className: "room", onClick: joinRoom, value: body },
             React.createElement("img", { src: "/assets/img/daisy head.png", alt: "daisy head", className: "daisyHead" }),
             React.createElement(
                 "h3",

@@ -22,7 +22,8 @@ const handleRoom = (e) => {
 const joinRoom = function (e) {
     e.preventDefault();
     //let roomName = e.target.value;
-    let body = e.target.value;
+    console.log(e.currentTarget);
+    let body = e.currentTarget.value;
     console.log(body);
     sendAjax('POST', '/joinRoom', body, redirect);
     return false;
@@ -41,7 +42,7 @@ const renderRoomList = function(){
     const roomNodes = this.state.data.map(function(room) {
             let body = "room=" + encodeURIComponent(room.roomName) + csrfStr;
         return (
-            <button key={room._id} className="room" onClick={joinRoom} value={body} >
+            <button key={room._id} type="submit" className="room" onClick={joinRoom} value={body} >
                 <img src="/assets/img/daisy head.png" alt="daisy head" className="daisyHead" />
                 <h3 className="roomName"> Name: {room.roomName} </h3>
                 <h3 className="roomOwner"> Owner: {room.ownerName} </h3>

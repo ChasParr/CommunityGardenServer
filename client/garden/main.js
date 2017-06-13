@@ -225,7 +225,7 @@ const init = () => {
     ctx = canvas.getContext('2d');
 
     socket = io.connect();
-
+    //console.log(socket);
     socket.on('connect', () => {
         console.log('connecting');
         socket.emit('join', {});

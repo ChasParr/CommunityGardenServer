@@ -115,6 +115,7 @@ const onJoin = (sock) => {
   const socket = sock;
 
   socket.on('join', () => {
+    console.log('join');
     socket.uid = socket.handshake.session.account._id;
     socket.roomName = socket.handshake.session.roomData.roomName;
     socket.rNum = Rooms.findIndex((room) => room.roomName === socket.roomName);
@@ -333,6 +334,7 @@ const updateTick = () => {
 
 const setupSockets = (ioServer) => {
   io = ioServer;
+  console.log(io);
   io.on('connection', (socket) => {
     onJoin(socket);
     console.log('connection');

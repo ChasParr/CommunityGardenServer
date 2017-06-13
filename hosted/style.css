@@ -48,11 +48,9 @@ nav:nth-child(1) {
     padding: 5px;
     border-radius: 4px;
     background-color: darkgreen;
-    transition: background-color 0.4s ease;
 }
 
 .navlink a:hover {
-    transition: background-color 0.8s ease;
     background-color: green;
 }
 
@@ -81,7 +79,6 @@ nav:nth-child(1) {
 }
 
 .makeRoomSubmit {
-    transition: background-color 0.4s ease;
     display: inline;
     width: 90px;
     background-color: darkgreen;
@@ -95,7 +92,6 @@ nav:nth-child(1) {
 }
 
 .makeRoomSubmit:hover {
-    transition: background-color 0.4s ease;
     background-color: green;
 }
 
@@ -132,7 +128,6 @@ nav:nth-child(1) {
     
     border: none;
     background-color: darkgreen;
-    transition: background-color 0.4s ease;
 }
 
 .formSubmit:link, .formSubmit:visited, .formSubmit:hover, .formSubmit:active {
@@ -140,7 +135,6 @@ nav:nth-child(1) {
 }
 
 .formSubmit:hover {
-    transition: background-color 0.4s ease;
     background-color: green;
 }
 
@@ -223,9 +217,6 @@ nav:nth-child(1) {
 }
 
 .room:hover {
-    transition: border-color 0.2s ease-out;
-    border-color: rgba(255,255,255, 0.8);
-    transition: background-color 2.6s ease-out;
     background-color: #66bfff;
 }
 

@@ -515,7 +515,7 @@ var init = function init() {
     ctx = canvas.getContext('2d');
 
     socket = io.connect();
-
+    //console.log(socket);
     socket.on('connect', function () {
         console.log('connecting');
         socket.emit('join', {});

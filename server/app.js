@@ -43,7 +43,7 @@ if (process.env.REDISCLOUD_URL) {
 const router = require('./router.js');
 
 const app = express();
-app.use('/assets', express.static(path.resolve('$__dirname}/../hosted/')));
+app.use('/assets', express.static(path.resolve(`${__dirname}/../hosted/`)));
 app.use(favicon(`${__dirname}/../hosted/img/favicon.png`));
 app.disable('x-powered-by');
 app.use(compression());
@@ -89,7 +89,15 @@ sockets.setupSockets(io);
 
 router(app);
 
-app.listen(port, (err) => {
+/* app.listen(port, (err) => {
+  if (err) {
+    throw err;
+  }
+  console.log(`Listening on port ${port}`);
+});
+*/
+// router(server);
+server.listen(port, (err) => {
   if (err) {
     throw err;
   }
